@@ -45,6 +45,7 @@ public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Ex
                 break;
 
             case InvalidCredentialsException:
+            case UnauthorizedException:
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 problemDetails.Status = StatusCodes.Status401Unauthorized;
                 problemDetails.Title = "Unauthorized";
@@ -60,9 +61,17 @@ public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Ex
 
             case TenantContextMissingException:
             case TenantIdMutationException:
+            case BusinessRuleViolationException:
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 problemDetails.Status = StatusCodes.Status400BadRequest;
-                problemDetails.Title = "Tenant Enforcement Error";
+                problemDetails.Title = "Bad Request";
+                problemDetails.Detail = exception.Message;
+                break;
+
+            case NotFoundException:
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                problemDetails.Status = StatusCodes.Status404NotFound;
+                problemDetails.Title = "Not Found";
                 problemDetails.Detail = exception.Message;
                 break;
 

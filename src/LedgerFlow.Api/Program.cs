@@ -1,5 +1,7 @@
 using LedgerFlow.Api.Middleware;
+using LedgerFlow.Api.Security;
 using LedgerFlow.Application;
+using LedgerFlow.Application.Abstractions.Security;
 using LedgerFlow.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +34,8 @@ if (string.IsNullOrWhiteSpace(jwtIssuer) ||
 
 builder.Services.AddControllers();
 builder.Services.AddApplication();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserContext, CurrentUserContext>();
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

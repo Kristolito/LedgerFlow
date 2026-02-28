@@ -3,6 +3,7 @@ using System;
 using LedgerFlow.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LedgerFlow.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(LedgerFlowDbContext))]
-    partial class LedgerFlowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260228134912_Phase3BillingDomain")]
+    partial class Phase3BillingDomain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
