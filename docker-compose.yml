@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ledgerflow-postgres
+    environment:
+      POSTGRES_DB: ledgerflow
+      POSTGRES_USER: ledgerflow
+      POSTGRES_PASSWORD: ledgerflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - ledgerflow-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ledgerflow -d ledgerflow" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ledgerflow-redis
+    ports:
+      - "6379:6379"
+    command: [ "redis-server", "--save", "", "--appendonly", "no" ]
+
+  ledgerflow.api:
+    container_name: ledgerflow-api
+    build:
+      context: .
+      dockerfile: src/LedgerFlow.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=ledgerflow;Username=ledgerflow;Password=ledgerflow
+      Redis__Host: redis:6379
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+volumes:
+  ledgerflow-postgres-data:

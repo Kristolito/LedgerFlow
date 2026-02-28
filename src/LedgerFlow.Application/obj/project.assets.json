@@ -1,0 +1,94 @@
+{
+  "version": 3,
+  "targets": {
+    "net8.0": {
+      "LedgerFlow.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/LedgerFlow.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LedgerFlow.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LedgerFlow.Domain/1.0.0": {
+      "type": "project",
+      "path": "../LedgerFlow.Domain/LedgerFlow.Domain.csproj",
+      "msbuildProject": "../LedgerFlow.Domain/LedgerFlow.Domain.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net8.0": [
+      "LedgerFlow.Domain >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\krist\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\krist\\Projects\\LedgerFlow\\src\\LedgerFlow.Application\\LedgerFlow.Application.csproj",
+      "projectName": "LedgerFlow.Application",
+      "projectPath": "C:\\Users\\krist\\Projects\\LedgerFlow\\src\\LedgerFlow.Application\\LedgerFlow.Application.csproj",
+      "packagesPath": "C:\\Users\\krist\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\krist\\Projects\\LedgerFlow\\src\\LedgerFlow.Application\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\krist\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net8.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {
+            "C:\\Users\\krist\\Projects\\LedgerFlow\\src\\LedgerFlow.Domain\\LedgerFlow.Domain.csproj": {
+              "projectPath": "C:\\Users\\krist\\Projects\\LedgerFlow\\src\\LedgerFlow.Domain\\LedgerFlow.Domain.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.418/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

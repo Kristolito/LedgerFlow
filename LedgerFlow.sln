@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F747F5C8-58D8-43B9-BFF7-4B9C324D6DAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedgerFlow.Api", "src\LedgerFlow.Api\LedgerFlow.Api.csproj", "{E825907F-F6D6-409F-A0DC-788B2EA4E192}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedgerFlow.Application", "src\LedgerFlow.Application\LedgerFlow.Application.csproj", "{D99015EE-DFC2-4E76-8971-942B1EDC469F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedgerFlow.Domain", "src\LedgerFlow.Domain\LedgerFlow.Domain.csproj", "{729FC951-42B6-4A14-9D68-5C76317B038F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedgerFlow.Infrastructure", "src\LedgerFlow.Infrastructure\LedgerFlow.Infrastructure.csproj", "{E0330756-529F-4695-A1BF-C4CF8CF72D14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LedgerFlow.Worker", "src\LedgerFlow.Worker\LedgerFlow.Worker.csproj", "{2923DA79-CCFB-452C-B613-B541189E3B48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E825907F-F6D6-409F-A0DC-788B2EA4E192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E825907F-F6D6-409F-A0DC-788B2EA4E192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E825907F-F6D6-409F-A0DC-788B2EA4E192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E825907F-F6D6-409F-A0DC-788B2EA4E192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D99015EE-DFC2-4E76-8971-942B1EDC469F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D99015EE-DFC2-4E76-8971-942B1EDC469F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D99015EE-DFC2-4E76-8971-942B1EDC469F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D99015EE-DFC2-4E76-8971-942B1EDC469F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{729FC951-42B6-4A14-9D68-5C76317B038F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{729FC951-42B6-4A14-9D68-5C76317B038F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{729FC951-42B6-4A14-9D68-5C76317B038F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{729FC951-42B6-4A14-9D68-5C76317B038F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0330756-529F-4695-A1BF-C4CF8CF72D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0330756-529F-4695-A1BF-C4CF8CF72D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0330756-529F-4695-A1BF-C4CF8CF72D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0330756-529F-4695-A1BF-C4CF8CF72D14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2923DA79-CCFB-452C-B613-B541189E3B48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2923DA79-CCFB-452C-B613-B541189E3B48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2923DA79-CCFB-452C-B613-B541189E3B48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2923DA79-CCFB-452C-B613-B541189E3B48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E825907F-F6D6-409F-A0DC-788B2EA4E192} = {F747F5C8-58D8-43B9-BFF7-4B9C324D6DAB}
+		{D99015EE-DFC2-4E76-8971-942B1EDC469F} = {F747F5C8-58D8-43B9-BFF7-4B9C324D6DAB}
+		{729FC951-42B6-4A14-9D68-5C76317B038F} = {F747F5C8-58D8-43B9-BFF7-4B9C324D6DAB}
+		{E0330756-529F-4695-A1BF-C4CF8CF72D14} = {F747F5C8-58D8-43B9-BFF7-4B9C324D6DAB}
+		{2923DA79-CCFB-452C-B613-B541189E3B48} = {F747F5C8-58D8-43B9-BFF7-4B9C324D6DAB}
+	EndGlobalSection
+EndGlobal
