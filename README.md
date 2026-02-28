@@ -33,12 +33,18 @@ README.md
 - Serilog structured logging with console sink and request logging middleware
 - EF Core + Npgsql wiring via `LedgerFlowDbContext`
 - Docker Compose with PostgreSQL, Redis, and API
+- Row-level multi-tenancy with tenant resolution middleware and EF Core tenant enforcement
 
 ## Configuration
 
 API reads:
 - `ConnectionStrings:Postgres` (supports env var `ConnectionStrings__Postgres`)
 - `Redis:Host` (supports env var `Redis__Host`)
+
+Tenant resolution order:
+1. JWT claim `tid` (when authenticated)
+2. `X-Tenant-Id` header
+3. no tenant (`null`) for public endpoints
 
 ## Build and Run
 
@@ -66,8 +72,25 @@ dotnet run --project src/LedgerFlow.Worker
 docker compose up --build
 ```
 
+## Migrations
+
+Create migration:
+
+```powershell
+dotnet ef migrations add InitialMultiTenancy --project src/LedgerFlow.Infrastructure --startup-project src/LedgerFlow.Api --output-dir Persistence/Migrations
+```
+
+Apply migration:
+
+```powershell
+dotnet ef database update --project src/LedgerFlow.Infrastructure --startup-project src/LedgerFlow.Api
+```
+
 ## Verify
 
 - Swagger: `http://localhost:8080/swagger` (Docker) or local Kestrel URL when running `dotnet run`
 - Health: `GET http://localhost:8080/health`
 - Correlation header: response includes `X-Correlation-Id`
+- Tenant context: `GET /tenant-context`
+- Tenant creation: `POST /tenants`
+- Tenant-scoped sample endpoint: `GET/POST /tenant-settings` (requires tenant context)

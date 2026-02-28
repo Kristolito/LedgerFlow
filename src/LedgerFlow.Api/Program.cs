@@ -1,4 +1,5 @@
 using LedgerFlow.Api.Middleware;
+using LedgerFlow.Application;
 using LedgerFlow.Infrastructure;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -15,6 +16,7 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
+builder.Services.AddApplication();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -63,7 +65,10 @@ var app = builder.Build();
 
 app.Logger.LogInformation("Redis host configured as {RedisHost}", redisHost);
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseRouting();
+app.UseMiddleware<TenantResolutionMiddleware>();
 app.UseSerilogRequestLogging();
 app.UseSwagger();
 app.UseSwaggerUI();
