@@ -1,5 +1,7 @@
 using LedgerFlow.Application.Abstractions.Persistence;
+using LedgerFlow.Application.Abstractions.Security;
 using LedgerFlow.Application.Abstractions.Tenancy;
+using LedgerFlow.Infrastructure.Auth;
 using LedgerFlow.Infrastructure.Persistence;
 using LedgerFlow.Infrastructure.Persistence.Repositories;
 using LedgerFlow.Infrastructure.Tenancy;
@@ -21,9 +23,14 @@ public static class DependencyInjection
         }
 
         services.AddScoped<ITenantContext, TenantContext>();
+        services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
         services.AddDbContext<LedgerFlowDbContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<ITenantRepository, TenantRepository>();
         services.AddScoped<ITenantSettingRepository, TenantSettingRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITenantMemberRepository, TenantMemberRepository>();
+        services.AddScoped<IPasswordHasherService, PasswordHasherService>();
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
         return services;
     }

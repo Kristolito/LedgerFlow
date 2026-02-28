@@ -37,9 +37,24 @@ public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Ex
                 break;
 
             case DuplicateSlugException:
+            case DuplicateEmailException:
                 context.Response.StatusCode = StatusCodes.Status409Conflict;
                 problemDetails.Status = StatusCodes.Status409Conflict;
                 problemDetails.Title = "Conflict";
+                problemDetails.Detail = exception.Message;
+                break;
+
+            case InvalidCredentialsException:
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                problemDetails.Status = StatusCodes.Status401Unauthorized;
+                problemDetails.Title = "Unauthorized";
+                problemDetails.Detail = exception.Message;
+                break;
+
+            case ForbiddenException:
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                problemDetails.Status = StatusCodes.Status403Forbidden;
+                problemDetails.Title = "Forbidden";
                 problemDetails.Detail = exception.Message;
                 break;
 

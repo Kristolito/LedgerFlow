@@ -33,6 +33,10 @@ services:
       ASPNETCORE_URLS: http://+:8080
       ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=ledgerflow;Username=ledgerflow;Password=ledgerflow
       Redis__Host: redis:6379
+      Jwt__Issuer: LedgerFlow
+      Jwt__Audience: LedgerFlow.Api
+      Jwt__SigningKey: ledgerflow-dev-signing-key-change-in-production-12345
+      Jwt__AccessTokenMinutes: 60
     ports:
       - "8080:8080"
     depends_on:

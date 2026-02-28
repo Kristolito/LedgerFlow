@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using LedgerFlow.Api.Tenancy;
 using LedgerFlow.Application.Abstractions.Tenancy;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LedgerFlow.Api.Middleware;
@@ -13,6 +14,7 @@ public sealed class TenantResolutionMiddleware(RequestDelegate next)
     {
         var endpoint = context.GetEndpoint();
         var requiresTenant = endpoint?.Metadata.GetMetadata<IRequireTenantMetadata>() is not null;
+        var requiresAuthorization = endpoint?.Metadata.GetMetadata<IAuthorizeData>() is not null;
 
         var (tenantId, source, invalidReason) = ResolveTenant(context);
         context.Items[TenantSourceItemKey] = source;
@@ -34,6 +36,12 @@ public sealed class TenantResolutionMiddleware(RequestDelegate next)
 
         if (requiresTenant && !tenantContext.HasTenant)
         {
+            if (requiresAuthorization && context.User.Identity?.IsAuthenticated != true)
+            {
+                await next(context);
+                return;
+            }
+
             await WriteProblemAsync(
                 context,
                 StatusCodes.Status400BadRequest,

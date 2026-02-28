@@ -13,6 +13,8 @@ public sealed class LedgerFlowDbContext(
 {
     public DbSet<Tenant> Tenants => Set<Tenant>();
     public DbSet<TenantSetting> TenantSettings => Set<TenantSetting>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<TenantMember> TenantMembers => Set<TenantMember>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
