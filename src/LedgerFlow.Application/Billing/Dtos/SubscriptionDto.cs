@@ -9,4 +9,5 @@ public sealed record SubscriptionDto(
     DateTimeOffset CurrentPeriodStart,
     DateTimeOffset CurrentPeriodEnd,
     bool CancelAtPeriodEnd,
+    string? StripeSubscriptionId,
     DateTimeOffset CreatedAt);

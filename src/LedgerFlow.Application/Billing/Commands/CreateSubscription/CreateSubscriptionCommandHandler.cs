@@ -1,4 +1,5 @@
 using LedgerFlow.Application.Abstractions.Persistence;
+using LedgerFlow.Application.Abstractions.Billing;
 using LedgerFlow.Application.Abstractions.Security;
 using LedgerFlow.Application.Abstractions.Tenancy;
 using LedgerFlow.Application.Billing.Dtos;
@@ -13,6 +14,8 @@ public sealed class CreateSubscriptionCommandHandler(
     IPlanRepository planRepository,
     ICustomerRepository customerRepository,
     ISubscriptionRepository subscriptionRepository,
+    IUserRepository userRepository,
+    IStripeBillingService stripeBillingService,
     ICurrentUserContext currentUserContext,
     ITenantContext tenantContext) : IRequestHandler<CreateSubscriptionCommand, SubscriptionDto>
 {
@@ -39,7 +42,15 @@ public sealed class CreateSubscriptionCommandHandler(
             throw new BusinessRuleViolationException("Only active plans can be subscribed to.");
         }
 
+        if (string.IsNullOrWhiteSpace(plan.StripePriceId))
+        {
+            throw new PlanStripePriceMissingException();
+        }
+
         var userId = currentUserContext.UserId.Value;
+        var user = await userRepository.GetByIdAsync(userId, cancellationToken)
+                   ?? throw new UnauthorizedException("Authenticated user could not be found.");
+
         var customer = await customerRepository.GetByUserIdAsync(userId, cancellationToken);
         if (customer is null)
         {
@@ -51,12 +62,21 @@ public sealed class CreateSubscriptionCommandHandler(
             }, cancellationToken);
         }
 
-        var now = DateTimeOffset.UtcNow;
-        var periodEnd = plan.Interval == PlanInterval.Month
-            ? now.AddMonths(1)
-            : now.AddYears(1);
+        if (string.IsNullOrWhiteSpace(customer.StripeCustomerId))
+        {
+            var stripeCustomerId = await stripeBillingService.EnsureCustomerAsync(user.Email, cancellationToken);
+            customer.StripeCustomerId = stripeCustomerId;
+            await customerRepository.SaveChangesAsync(cancellationToken);
+        }
 
-        var status = request.TrialDays > 0 ? SubscriptionStatus.Trialing : SubscriptionStatus.Active;
+        var stripeSubscription = await stripeBillingService.CreateSubscriptionAsync(
+            customer.StripeCustomerId!,
+            plan.StripePriceId,
+            request.TrialDays,
+            cancellationToken);
+
+        var now = DateTimeOffset.UtcNow;
+        var status = MapStripeStatus(stripeSubscription.status);
         DateTimeOffset? trialEndsAt = request.TrialDays > 0 ? now.AddDays(request.TrialDays) : null;
 
         var subscription = new Subscription
@@ -66,9 +86,10 @@ public sealed class CreateSubscriptionCommandHandler(
             PlanId = plan.Id,
             Status = status,
             TrialEndsAt = trialEndsAt,
-            CurrentPeriodStart = now,
-            CurrentPeriodEnd = periodEnd,
+            CurrentPeriodStart = stripeSubscription.periodStart,
+            CurrentPeriodEnd = stripeSubscription.periodEnd,
             CancelAtPeriodEnd = false,
+            StripeSubscriptionId = stripeSubscription.subscriptionId,
             CreatedAt = now
         };
 
@@ -82,6 +103,22 @@ public sealed class CreateSubscriptionCommandHandler(
             created.CurrentPeriodStart,
             created.CurrentPeriodEnd,
             created.CancelAtPeriodEnd,
+            created.StripeSubscriptionId,
             created.CreatedAt);
+    }
+
+    private static SubscriptionStatus MapStripeStatus(string stripeStatus)
+    {
+        return stripeStatus.ToLowerInvariant() switch
+        {
+            "trialing" => SubscriptionStatus.Trialing,
+            "active" => SubscriptionStatus.Active,
+            "past_due" => SubscriptionStatus.PastDue,
+            "canceled" => SubscriptionStatus.Canceled,
+            "unpaid" => SubscriptionStatus.PastDue,
+            "incomplete" => SubscriptionStatus.PastDue,
+            "incomplete_expired" => SubscriptionStatus.Canceled,
+            _ => SubscriptionStatus.Active
+        };
     }
 }

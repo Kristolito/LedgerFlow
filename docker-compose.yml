@@ -37,6 +37,8 @@ services:
       Jwt__Audience: LedgerFlow.Api
       Jwt__SigningKey: ledgerflow-dev-signing-key-change-in-production-12345
       Jwt__AccessTokenMinutes: 60
+      Stripe__SecretKey: sk_test_replace_me
+      Stripe__WebhookSecret: whsec_replace_me
     ports:
       - "8080:8080"
     depends_on:

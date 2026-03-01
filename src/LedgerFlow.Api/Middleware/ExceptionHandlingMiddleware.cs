@@ -38,6 +38,7 @@ public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Ex
 
             case DuplicateSlugException:
             case DuplicateEmailException:
+            case PlanStripePriceMissingException:
                 context.Response.StatusCode = StatusCodes.Status409Conflict;
                 problemDetails.Status = StatusCodes.Status409Conflict;
                 problemDetails.Title = "Conflict";
@@ -73,6 +74,13 @@ public sealed class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Ex
                 problemDetails.Status = StatusCodes.Status404NotFound;
                 problemDetails.Title = "Not Found";
                 problemDetails.Detail = exception.Message;
+                break;
+
+            case StripeIntegrationException:
+                context.Response.StatusCode = StatusCodes.Status502BadGateway;
+                problemDetails.Status = StatusCodes.Status502BadGateway;
+                problemDetails.Title = "Stripe Integration Error";
+                problemDetails.Detail = "Failed to complete Stripe operation.";
                 break;
 
             default:

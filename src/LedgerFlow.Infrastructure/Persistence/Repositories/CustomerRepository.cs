@@ -18,4 +18,9 @@ public sealed class CustomerRepository(LedgerFlowDbContext dbContext) : ICustome
         await dbContext.SaveChangesAsync(cancellationToken);
         return customer;
     }
+
+    public Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        return dbContext.SaveChangesAsync(cancellationToken);
+    }
 }

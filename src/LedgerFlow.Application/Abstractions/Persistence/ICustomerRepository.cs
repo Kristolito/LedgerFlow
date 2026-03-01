@@ -6,4 +6,5 @@ public interface ICustomerRepository
 {
     Task<Customer?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken);
     Task<Customer> CreateAsync(Customer customer, CancellationToken cancellationToken);
+    Task SaveChangesAsync(CancellationToken cancellationToken);
 }

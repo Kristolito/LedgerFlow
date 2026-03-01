@@ -22,6 +22,7 @@ public sealed class GetSubscriptionsQueryHandler(ISubscriptionRepository subscri
                 x.CurrentPeriodStart,
                 x.CurrentPeriodEnd,
                 x.CancelAtPeriodEnd,
+                x.StripeSubscriptionId,
                 x.CreatedAt))
             .ToList();
     }
