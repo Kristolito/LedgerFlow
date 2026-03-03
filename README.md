@@ -94,3 +94,23 @@ dotnet ef database update --project src/LedgerFlow.Infrastructure --startup-proj
 - Tenant context: `GET /tenant-context`
 - Tenant creation: `POST /tenants`
 - Tenant-scoped sample endpoint: `GET/POST /tenant-settings` (requires tenant context)
+
+## Stripe Webhooks (Phase 5)
+
+- Endpoint: `POST /webhooks/stripe` (public, signature-verified with `Stripe:WebhookSecret`)
+- Idempotency key: `StripeEventId` stored in `webhook_events` table
+
+### Stripe CLI local testing
+
+```powershell
+stripe listen --forward-to http://localhost:8080/webhooks/stripe
+stripe trigger invoice.paid
+stripe trigger invoice.payment_failed
+stripe trigger customer.subscription.updated
+```
+
+### Webhook verification checklist
+
+- Duplicate events are not processed twice.
+- Subscription status updates via webhook events.
+- Invoices are created/updated from invoice webhook events.

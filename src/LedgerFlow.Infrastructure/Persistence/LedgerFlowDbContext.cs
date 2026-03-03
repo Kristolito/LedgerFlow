@@ -19,6 +19,7 @@ public sealed class LedgerFlowDbContext(
     public DbSet<Customer> Customers => Set<Customer>();
     public DbSet<Subscription> Subscriptions => Set<Subscription>();
     public DbSet<Invoice> Invoices => Set<Invoice>();
+    public DbSet<WebhookEvent> WebhookEvents => Set<WebhookEvent>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

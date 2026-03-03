@@ -36,9 +36,12 @@ public static class DependencyInjection
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
         services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+        services.AddScoped<IWebhookEventRepository, WebhookEventRepository>();
         services.AddScoped<IPasswordHasherService, PasswordHasherService>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IStripeBillingService, StripeBillingService>();
+        services.AddScoped<IStripeWebhookProcessor, StripeWebhookProcessor>();
+        services.AddSingleton<IStripeWebhookEventParser, StripeWebhookEventParser>();
 
         return services;
     }
